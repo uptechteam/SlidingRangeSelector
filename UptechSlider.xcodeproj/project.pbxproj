@@ -8,20 +8,28 @@
 
 /* Begin PBXBuildFile section */
 		AC4851DF230AA7740053FA77 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4851DE230AA7740053FA77 /* AppDelegate.swift */; };
-		AC4851E1230AA7740053FA77 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4851E0230AA7740053FA77 /* ViewController.swift */; };
+		AC4851E1230AA7740053FA77 /* ViewController1.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4851E0230AA7740053FA77 /* ViewController1.swift */; };
 		AC4851E4230AA7740053FA77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC4851E2230AA7740053FA77 /* Main.storyboard */; };
 		AC4851E6230AA7760053FA77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC4851E5230AA7760053FA77 /* Assets.xcassets */; };
 		AC4851E9230AA7760053FA77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC4851E7230AA7760053FA77 /* LaunchScreen.storyboard */; };
+		AC4851F1230AA85D0053FA77 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC4851F0230AA85D0053FA77 /* SliderView.swift */; };
+		AC90E4D723541291008A24CA /* ViewController2.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC90E4D623541291008A24CA /* ViewController2.swift */; };
+		AC90E4D923541364008A24CA /* SliderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC90E4D823541364008A24CA /* SliderTableViewCell.swift */; };
+		AC90E4DB23541507008A24CA /* SliderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC90E4DA23541507008A24CA /* SliderModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		AC4851DB230AA7740053FA77 /* UptechSlider.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UptechSlider.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AC4851DE230AA7740053FA77 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		AC4851E0230AA7740053FA77 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		AC4851E0230AA7740053FA77 /* ViewController1.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController1.swift; sourceTree = "<group>"; };
 		AC4851E3230AA7740053FA77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		AC4851E5230AA7760053FA77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC4851E8230AA7760053FA77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC4851EA230AA7760053FA77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AC4851F0230AA85D0053FA77 /* SliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderView.swift; sourceTree = "<group>"; };
+		AC90E4D623541291008A24CA /* ViewController2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController2.swift; sourceTree = "<group>"; };
+		AC90E4D823541364008A24CA /* SliderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderTableViewCell.swift; sourceTree = "<group>"; };
+		AC90E4DA23541507008A24CA /* SliderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,14 +62,34 @@
 		AC4851DD230AA7740053FA77 /* UptechSlider */ = {
 			isa = PBXGroup;
 			children = (
-				AC4851DE230AA7740053FA77 /* AppDelegate.swift */,
-				AC4851E0230AA7740053FA77 /* ViewController.swift */,
+				AC4851F0230AA85D0053FA77 /* SliderView.swift */,
+				AC90E4DA23541507008A24CA /* SliderModel.swift */,
+				AC90E4DD23541BF6008A24CA /* DemoPlainView */,
+				AC90E4DC23541BDD008A24CA /* DemoTableView */,
 				AC4851E2230AA7740053FA77 /* Main.storyboard */,
 				AC4851E5230AA7760053FA77 /* Assets.xcassets */,
 				AC4851E7230AA7760053FA77 /* LaunchScreen.storyboard */,
 				AC4851EA230AA7760053FA77 /* Info.plist */,
+				AC4851DE230AA7740053FA77 /* AppDelegate.swift */,
 			);
 			path = UptechSlider;
+			sourceTree = "<group>";
+		};
+		AC90E4DC23541BDD008A24CA /* DemoTableView */ = {
+			isa = PBXGroup;
+			children = (
+				AC90E4D623541291008A24CA /* ViewController2.swift */,
+				AC90E4D823541364008A24CA /* SliderTableViewCell.swift */,
+			);
+			path = DemoTableView;
+			sourceTree = "<group>";
+		};
+		AC90E4DD23541BF6008A24CA /* DemoPlainView */ = {
+			isa = PBXGroup;
+			children = (
+				AC4851E0230AA7740053FA77 /* ViewController1.swift */,
+			);
+			path = DemoPlainView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -135,8 +163,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AC4851E1230AA7740053FA77 /* ViewController.swift in Sources */,
+				AC90E4DB23541507008A24CA /* SliderModel.swift in Sources */,
+				AC4851F1230AA85D0053FA77 /* SliderView.swift in Sources */,
+				AC90E4D723541291008A24CA /* ViewController2.swift in Sources */,
+				AC4851E1230AA7740053FA77 /* ViewController1.swift in Sources */,
 				AC4851DF230AA7740053FA77 /* AppDelegate.swift in Sources */,
+				AC90E4D923541364008A24CA /* SliderTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -289,7 +321,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.artemmysik.slider.uptech.UptechSlider;
+				PRODUCT_BUNDLE_IDENTIFIER = com.artemmysik.uptech.slider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -307,7 +339,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.artemmysik.slider.uptech.UptechSlider;
+				PRODUCT_BUNDLE_IDENTIFIER = com.artemmysik.uptech.slider;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
