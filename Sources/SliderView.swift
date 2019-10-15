@@ -48,6 +48,18 @@ final class SliderView: UIView {
 
     // MARK: - Lifecycle
 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setup()
+        setupSelectionViewsGestureRecognizers()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+        setup()
+        setupSelectionViewsGestureRecognizers()
+    }
+
     override func awakeFromNib() {
         super.awakeFromNib()
         setup()
@@ -57,7 +69,6 @@ final class SliderView: UIView {
     // MARK: - Private Methods
 
     private func setup() {
-        translatesAutoresizingMaskIntoConstraints = false
         setupStackView()
 
         layoutIfNeeded()
@@ -66,11 +77,10 @@ final class SliderView: UIView {
             view.backgroundColor = Constants.selectionViewColor
             view.layer.cornerRadius = 5
             view.isUserInteractionEnabled = true
-            self?.addSubview(view)
-            self?.sendSubviewToBack(view)
+            self?.insertSubview(view, at: 0)
         }
 
-        rangeView.backgroundColor = UIColor.groupTableViewBackground
+        rangeView.backgroundColor = Constants.rangeViewColor
         rangeView.center.y = stackView.center.y
         addSubview(rangeView)
         sendSubviewToBack(rangeView)
@@ -84,10 +94,10 @@ final class SliderView: UIView {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(stackView)
         NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0),
-            stackView.topAnchor.constraint(equalTo: topAnchor, constant: 0),
-            stackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor, constant: 0),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             stackView.heightAnchor.constraint(equalToConstant: Constants.selectionViewHeight)
             ])
     }
@@ -351,11 +361,11 @@ final class SliderView: UIView {
             label.text = String()
             containersViews[index].addSubview(label)
             NSLayoutConstraint.activate([
-                label.leadingAnchor.constraint(equalTo: containersViews[index].leadingAnchor, constant: 0),
-                label.trailingAnchor.constraint(equalTo: containersViews[index].trailingAnchor, constant: 0),
-                label.topAnchor.constraint(equalTo: containersViews[index].topAnchor, constant: 0),
-                label.bottomAnchor.constraint(equalTo: containersViews[index].bottomAnchor, constant: 0)
-                ])
+                label.leadingAnchor.constraint(equalTo: containersViews[index].leadingAnchor),
+                label.trailingAnchor.constraint(equalTo: containersViews[index].trailingAnchor),
+                label.topAnchor.constraint(equalTo: containersViews[index].topAnchor),
+                label.bottomAnchor.constraint(equalTo: containersViews[index].bottomAnchor)
+            ])
             labels.append(label)
         }
         self.labels = labels
@@ -399,6 +409,7 @@ final class SliderView: UIView {
 extension SliderView {
     enum Constants {
         fileprivate static let selectionViewColor = UIColor(red: 0/255, green: 158/255, blue: 152/255, alpha: 1.0)
+        fileprivate static let rangeViewColor = UIColor(white: 0.9, alpha: 1.0)
         fileprivate static let margin: CGFloat = 0.0
         fileprivate static let selectionViewMinWidth: CGFloat = 55
         fileprivate static let selectionViewHeight: CGFloat = 55

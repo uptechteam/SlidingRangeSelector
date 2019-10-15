@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController2: UIViewController, UITableViewDataSource, SliderTableViewCellDelegate {
+class TablewViewController: UIViewController, UITableViewDataSource, SliderTableViewCellDelegate {
 
     @IBOutlet private var tableView: UITableView!
     private var data = [SliderModel]()

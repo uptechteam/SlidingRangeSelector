@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController1: UIViewController {
+class PlainViewController: UIViewController {
 
     @IBOutlet private weak var sliderView: SliderView!
     
@@ -32,7 +32,7 @@ class ViewController1: UIViewController {
 
 }
 
-extension ViewController1: SliderViewDelegate {
+extension PlainViewController: SliderViewDelegate {
     func sliderViewDidSelectRange(_ sliderView: SliderView, minIndex: Int, maxIndex: Int) {
         sliderModel.minSelectedValueIndex = minIndex
         sliderModel.maxSelectedValueIndex = maxIndex

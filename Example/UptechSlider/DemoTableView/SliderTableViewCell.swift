@@ -28,12 +28,14 @@ class SliderTableViewCell: UITableViewCell {
     }
 
     func setup(with data: SliderModel) {
-        sliderView.set(
-            values: data.values,
-            minSelectedValueIndex: data.minSelectedValueIndex,
-            maxSelectedValueIndex: data.maxSelectedValueIndex,
-            animated: false
-        )
+        DispatchQueue.main.async {
+            self.sliderView.set(
+                values: data.values,
+                minSelectedValueIndex: data.minSelectedValueIndex,
+                maxSelectedValueIndex: data.maxSelectedValueIndex,
+                animated: false
+            )
+        }
     }
 
 }
