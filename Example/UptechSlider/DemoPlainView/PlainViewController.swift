@@ -13,7 +13,7 @@ class PlainViewController: UIViewController {
     @IBOutlet private weak var sliderView: SliderView!
     
     var sliderModel = SliderModel(
-        values: ["uptech", "23", "2000", "3", "68"],
+        values: ["uptech", "1", "2", "3", "4", "5"],
         minSelectedValueIndex: 0,
         maxSelectedValueIndex: 3
     )
