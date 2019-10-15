@@ -14,16 +14,14 @@ protocol SliderViewDelegate: class {
 
 final class SliderView: UIView {
 
-    // MARK: - Public Properties
+    // MARK: - Public Properties -
 
     weak var delegate: SliderViewDelegate?
 
-    // MARK: - Private Properties
+    // MARK: - Private Properties -
 
     private var stackView: UIStackView!
-    private var labels = [UILabel]()
-    private var containersViews = [UIView]()
-
+    private var itemsViews = [ItemView]()
     fileprivate var rangeView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 34))
 
     private var firstSelectionView = UIView(frame: CGRect(x: 0, y: 0, width: Constants.selectionViewMinWidth, height: Constants.selectionViewHeight))
@@ -36,17 +34,21 @@ final class SliderView: UIView {
     fileprivate var minSelectionView: UIView {
         return maxSelectionView == firstSelectionView ? secondSelectionView : firstSelectionView
     }
-    fileprivate var containersViewTapGestures: [UITapGestureRecognizer] = [UITapGestureRecognizer]()
 
     fileprivate var minSelectionViewPan = UIPanGestureRecognizer(target: nil, action: nil)
     fileprivate var maxSelectionViewPan = UIPanGestureRecognizer(target: nil, action: nil)
     fileprivate let minSelectionViewTap = UITapGestureRecognizer(target: nil, action: nil)
     fileprivate let maxSelectionViewTap = UITapGestureRecognizer(target: nil, action: nil)
 
-    fileprivate var itemsFrames = [ValueIndexWithSize]()
+    fileprivate var convertedItemsFrames: [CGRect] {
+        itemsViews.map { itemView in
+            return self.convert(itemView.frame, from: stackView)
+        }
+    }
+
     fileprivate var currentProps: Props?
 
-    // MARK: - Lifecycle
+    // MARK: - Lifecycle -
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -66,11 +68,10 @@ final class SliderView: UIView {
         setupSelectionViewsGestureRecognizers()
     }
 
-    // MARK: - Private Methods
+    // MARK: - Private Methods -
 
     private func setup() {
         setupStackView()
-
         layoutIfNeeded()
 
         [maxSelectionView, minSelectionView].forEach { [weak self] view in
@@ -99,23 +100,15 @@ final class SliderView: UIView {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
             stackView.heightAnchor.constraint(equalToConstant: Constants.selectionViewHeight)
-            ])
+        ])
     }
 
-    private func setAllLabelsDeselected() {
-        labels.indices.forEach { self.deselectItemLabel(index: $0) }
+    private func setAllItemsDeselected() {
+        itemsViews.forEach { $0.set(active: false) }
     }
 
-    private func deselectItemLabel(index: Int) {
-        let label = labels[index]
-        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.textColor = UIColor.black
-    }
-
-    private func selectItemLabel(index: Int) {
-        let label = labels[index]
-        label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-        label.textColor = .white
+    private func setItemView(active: Bool, at index: Int) {
+        itemsViews[index].set(active: active)
     }
 
     private func countLabelWidth(with text: String) -> CGFloat {
@@ -131,7 +124,7 @@ final class SliderView: UIView {
         return width
     }
 
-    func selectionViewWidth(for text: String?) -> CGFloat {
+    private func selectionViewWidth(for text: String?) -> CGFloat {
         let labelWidth = countLabelWidth(with: text ?? String())
         let labelWidthWithMargins = labelWidth + 20
         let newSelectionViewWidth = labelWidthWithMargins < Constants.selectionViewMinWidth ? Constants.selectionViewMinWidth : labelWidthWithMargins
@@ -140,8 +133,8 @@ final class SliderView: UIView {
 
     private func selectItem(index: Int, isMinimum: Bool, animated: Bool = true) {
         let selectionView = isMinimum ? minSelectionView : maxSelectionView
-        let frameForItem = itemsFrames[index].frame
-        let newSelectionViewWidth = selectionViewWidth(for: labels[index].text)
+        let frameForItem = convertedItemsFrames[index]
+        let newSelectionViewWidth = selectionViewWidth(for: itemsViews[index].text)
 
         let changeSelectionViewFrame: () -> Void = { [weak self] in
             selectionView.frame.size.width = newSelectionViewWidth
@@ -156,7 +149,7 @@ final class SliderView: UIView {
             changeSelectionViewFrame()
         }
 
-        selectItemLabel(index: index)
+        setItemView(active: true, at: index)
     }
 
     private func updateRangeView() {
@@ -179,13 +172,6 @@ final class SliderView: UIView {
         maxSelectionView.addGestureRecognizer(maxSelectionViewTap)
     }
 
-    private func setupContainersGestureRecognizers(count: Int) {
-        containersViewTapGestures = (0..<count)
-            .map { _ in UITapGestureRecognizer(target: self, action: #selector(SliderView.handleTapGesture(_:))) }
-        zip(containersViews, containersViewTapGestures)
-            .forEach { $0.0.addGestureRecognizer($0.1) }
-    }
-
     @objc private func handleTapGesture(_ tap: UITapGestureRecognizer) {
         guard let view = tap.view,
             let props = currentProps,
@@ -198,24 +184,24 @@ final class SliderView: UIView {
         var newMinMaxIndices: (min: Int, max: Int) = (min: oldMin, max: oldMax)
         if nearestValueIndex == oldMin || nearestValueIndex == oldMax {
             let isMinimumWillMove = nearestValueIndex == oldMax
-            deselectItemLabel(index: isMinimumWillMove ? oldMin : oldMax)
+            setItemView(active: false, at: isMinimumWillMove ? oldMin : oldMax)
             selectItem(index: nearestValueIndex, isMinimum: isMinimumWillMove)
             newMinMaxIndices = (min: nearestValueIndex, max: nearestValueIndex)
         } else if nearestValueIndex < oldMin && nearestValueIndex < oldMax {
             if oldMax != oldMin {
-                deselectItemLabel(index: oldMin)
+                setItemView(active: false, at: oldMin)
             }
             selectItem(index: nearestValueIndex, isMinimum: true)
             newMinMaxIndices = (min: nearestValueIndex, max: oldMax)
         } else if nearestValueIndex > oldMin && nearestValueIndex < oldMax {
-            deselectItemLabel(index: oldMin)
+            setItemView(active: false, at: oldMin)
             selectItem(index: nearestValueIndex, isMinimum: true)
-            deselectItemLabel(index: oldMax)
+            setItemView(active: false, at: oldMax)
             selectItem(index: nearestValueIndex, isMinimum: false)
             newMinMaxIndices = (min: nearestValueIndex, max: nearestValueIndex)
         } else if nearestValueIndex > oldMin && nearestValueIndex > oldMax {
             if oldMax != oldMin {
-                deselectItemLabel(index: oldMax)
+                setItemView(active: false, at: oldMax)
             }
             selectItem(index: nearestValueIndex, isMinimum: false)
             newMinMaxIndices = (min: oldMin, max: nearestValueIndex)
@@ -250,8 +236,8 @@ final class SliderView: UIView {
         if let view = pan.view {
             let translation = pan.translation(in: self)
 
-            let minX = itemsFrames[0].frame.midX
-            let maxX = itemsFrames[renderedProps.values.count - 1].frame.midX
+            let minX = convertedItemsFrames[0].midX
+            let maxX = convertedItemsFrames[renderedProps.values.count - 1].midX
 
             let lastStoredItem = findMinItemTo(centerX: view.center.x)
             let changedX = view.center.x + translation.x
@@ -264,7 +250,7 @@ final class SliderView: UIView {
                 let lastItem = lastStoredItem {
 
                 if currentProps?.minSelectedValueIndex != currentProps?.maxSelectedValueIndex  {
-                    deselectItemLabel(index: lastItem.index)
+                    setItemView(active: false, at: lastItem.index)
                 }
 
                 if findMinItemTo(centerX: minSelectionView.center.x) == findMinItemTo(centerX: maxSelectionView.center.x) {
@@ -276,24 +262,24 @@ final class SliderView: UIView {
                     currentProps?.maxSelectedValueIndex = nearestItem.index
                 }
 
-                selectItemLabel(index: nearestItem.index)
+                setItemView(active: true, at: nearestItem.index)
             }
 
-            let nearestFramesIndices = itemsFrames
+            let nearestFramesIndices = convertedItemsFrames
                 .indices
-                .sorted(by: { abs(itemsFrames[$0].frame.midX - view.center.x) < abs(itemsFrames[$1].frame.midX - view.center.x) })
+                .sorted(by: { abs(convertedItemsFrames[$0].midX - view.center.x) < abs(convertedItemsFrames[$1].midX - view.center.x) })
                 .prefix(2)
-                .sorted(by: { itemsFrames[$0].frame.midX < itemsFrames[$1].frame.midX })
+                .sorted(by: { convertedItemsFrames[$0].midX < convertedItemsFrames[$1].midX })
             if nearestFramesIndices.count == 2 {
                 let leftNearestItemIndex = nearestFramesIndices[0]
                 let rightNearestItemIndex = nearestFramesIndices[1]
-                let leftNearestItemWidth = selectionViewWidth(for: labels[leftNearestItemIndex].text)
-                let rightNearestItemWidth = selectionViewWidth(for: labels[rightNearestItemIndex].text)
+                let leftNearestItemWidth = selectionViewWidth(for: itemsViews[leftNearestItemIndex].text)
+                let rightNearestItemWidth = selectionViewWidth(for: itemsViews[rightNearestItemIndex].text)
                 if leftNearestItemWidth == rightNearestItemWidth {
                     view.frame.size.width = leftNearestItemWidth
                 } else {
-                    let leftNearestItemMidX = itemsFrames[leftNearestItemIndex].frame.midX
-                    let rightNearestItemMidX = itemsFrames[rightNearestItemIndex].frame.midX
+                    let leftNearestItemMidX = convertedItemsFrames[leftNearestItemIndex].midX
+                    let rightNearestItemMidX = convertedItemsFrames[rightNearestItemIndex].midX
                     let currentCoordinateCoef = (view.center.x - leftNearestItemMidX)/(rightNearestItemMidX - leftNearestItemMidX)
                     let selectionViewsWidthDiff = rightNearestItemWidth - leftNearestItemWidth
                     view.frame.size.width = currentCoordinateCoef * selectionViewsWidthDiff + leftNearestItemWidth
@@ -307,80 +293,41 @@ final class SliderView: UIView {
     }
 
     private func findMinItemTo(centerX: CGFloat) -> ValueIndexWithSize? {
-        return itemsFrames.min(by: { abs($0.frame.midX - centerX) < abs($1.frame.midX - centerX) })
-    }
-
-    private func frameOfItem(at index: Int) -> CGRect {
-        let containerView = containersViews[index]
-        var frame = self.convert(containerView.frame, from: stackView)
-        let countedWidth = countLabelWidth(with: labels[index].text ?? String())
-        frame.origin.x -= (frame.size.height - frame.size.width)/2
-        frame.size.width = countedWidth < Constants.selectionViewMinWidth ? frame.size.height : countedWidth
-
-        return frame
+        return convertedItemsFrames
+            .indices
+            .map { ValueIndexWithSize(index: $0, frame: convertedItemsFrames[$0]) }
+            .min(by: { abs($0.frame.midX - centerX) < abs($1.frame.midX - centerX) })
     }
 
     private func render(props: Props, animated: Bool) {
         if currentProps?.values.count != props.values.count {
-            setupContainersViews(count: props.values.count)
-            setupContainersGestureRecognizers(count: props.values.count)
-            setupLabels(count: props.values.count)
-            setupItemsFrame(count: props.values.count)
+            setupItemsViews(count: props.values.count)
+            layoutIfNeeded()
         }
 
-        setAllLabelsDeselected()
-        zip(props.values, labels).forEach { $1.text = $0 }
+        setAllItemsDeselected()
+        zip(props.values, itemsViews).forEach { $1.text = $0 }
         selectItem(index: props.maxSelectedValueIndex, isMinimum: false, animated: animated)
         selectItem(index: props.minSelectedValueIndex, isMinimum: true, animated: animated)
         currentProps = props
     }
 
-    private func setupContainersViews(count: Int) {
-        self.containersViews.forEach { $0.removeFromSuperview() }
-        self.containersViews.removeAll()
-        var containers = [UIView]()
-        for _ in 0..<count {
-            let view = UIView()
-            view.backgroundColor = .clear
-            view.isUserInteractionEnabled = true
-            stackView.addArrangedSubview(view)
-            containers.append(view)
+    private func setupItemsViews(count: Int) {
+        itemsViews.forEach { $0.removeFromSuperview() }
+        itemsViews.removeAll()
+        itemsViews = (0..<count).map { _ in
+            let itemView = ItemView()
+            let gestureRecognizer = UITapGestureRecognizer(
+                target: self,
+                action: #selector(SliderView.handleTapGesture(_:))
+            )
+            itemView.addGestureRecognizer(gestureRecognizer)
+            stackView.addArrangedSubview(itemView)
+            return itemView
         }
-        self.containersViews = containers
     }
 
-    private func setupLabels(count: Int) {
-        self.labels.removeAll()
-        var labels = [UILabel]()
-        for index in 0..<count {
-            let label = UILabel()
-            label.textAlignment = .center
-            label.textColor = UIColor.black
-            label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
-            label.translatesAutoresizingMaskIntoConstraints = false
-            label.text = String()
-            containersViews[index].addSubview(label)
-            NSLayoutConstraint.activate([
-                label.leadingAnchor.constraint(equalTo: containersViews[index].leadingAnchor),
-                label.trailingAnchor.constraint(equalTo: containersViews[index].trailingAnchor),
-                label.topAnchor.constraint(equalTo: containersViews[index].topAnchor),
-                label.bottomAnchor.constraint(equalTo: containersViews[index].bottomAnchor)
-            ])
-            labels.append(label)
-        }
-        self.labels = labels
-    }
-
-    private func setupItemsFrame(count: Int) {
-        itemsFrames.removeAll()
-
-        layoutIfNeeded()
-
-        itemsFrames = (0..<count)
-            .map { ValueIndexWithSize(index: $0, frame: frameOfItem(at: $0)) }
-    }
-
-    // MARK: - Public Methods
+    // MARK: - Public Methods -
 
     func set(values: [String], minSelectedValueIndex: Int, maxSelectedValueIndex: Int, animated: Bool) {
         if values.isEmpty {
@@ -394,6 +341,69 @@ final class SliderView: UIView {
         render(props: props, animated: animated)
     }
 
+    // MARK: - Inner Declarations -
+
+    private class ItemView: UIView {
+        private let label: Label
+
+        var text: String? {
+            set { label.text = newValue }
+            get { return label.text }
+        }
+
+        override init(frame: CGRect) {
+            label = Label()
+            super.init(frame: frame)
+            setup()
+        }
+
+        required init?(coder: NSCoder) {
+            label = Label()
+            super.init(coder: coder)
+            setup()
+        }
+
+        func set(active: Bool) {
+            label.set(active: active)
+        }
+
+        private func setup() {
+            backgroundColor = .clear
+            isUserInteractionEnabled = true
+            label.translatesAutoresizingMaskIntoConstraints = false
+            addSubview(label)
+            NSLayoutConstraint.activate([
+                label.leadingAnchor.constraint(equalTo: leadingAnchor),
+                label.trailingAnchor.constraint(equalTo: trailingAnchor),
+                label.topAnchor.constraint(equalTo: topAnchor),
+                label.bottomAnchor.constraint(equalTo: bottomAnchor)
+            ])
+        }
+    }
+
+    private class Label: UILabel {
+        override init(frame: CGRect) {
+            super.init(frame: frame)
+            setup()
+        }
+
+        required init?(coder: NSCoder) {
+            super.init(coder: coder)
+            setup()
+        }
+
+        func set(active: Bool) {
+            textColor = active ? UIColor.white : UIColor.black
+        }
+
+        private func setup() {
+            textAlignment = .center
+            textColor = UIColor.black
+            font = UIFont.systemFont(ofSize: 15, weight: .regular)
+            text = String()
+        }
+    }
+
     fileprivate struct Props {
         let values: [String]
         fileprivate(set) var minSelectedValueIndex: Int
@@ -401,8 +411,8 @@ final class SliderView: UIView {
     }
 
     fileprivate struct ValueIndexWithSize: Equatable {
-        var index: Int
-        var frame: CGRect
+        let index: Int
+        let frame: CGRect
     }
 }
 
