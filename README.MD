@@ -1,4 +1,6 @@
 # UptechSlider
+![](slider-main.png)
+![Platform](https://img.shields.io/badge/platform-iOS-009E98)
 
 Simple, nice UI slider with ability to select range from array of your values
 
