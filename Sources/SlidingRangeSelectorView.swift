@@ -8,15 +8,15 @@
 
 import UIKit
 
-protocol SliderViewDelegate: class {
-    func sliderViewDidSelectRange(_ sliderView: SliderView, minIndex: Int, maxIndex: Int)
+protocol SlidingRangeSelectorViewDelegate: class {
+    func sliderViewDidSelectRange(_ sliderView: SlidingRangeSelectorView, minIndex: Int, maxIndex: Int)
 }
 
-final class SliderView: UIView {
+final class SlidingRangeSelectorView: UIView {
 
     // MARK: - Public Properties -
 
-    weak var delegate: SliderViewDelegate?
+    weak var delegate: SlidingRangeSelectorViewDelegate?
 
     // MARK: - Private Properties -
 
@@ -91,8 +91,8 @@ final class SliderView: UIView {
     private func setupSelectionViews() {
         [minSelectionView, maxSelectionView].forEach { selectionView in
             addSubview(selectionView)
-            selectionView.tapGesture.addTarget(self, action: #selector(SliderView.handleTapGesture(_:)))
-            selectionView.panGesture.addTarget(self, action: #selector(SliderView.handlePanGesture(_:)))
+            selectionView.tapGesture.addTarget(self, action: #selector(SlidingRangeSelectorView.handleTapGesture(_:)))
+            selectionView.panGesture.addTarget(self, action: #selector(SlidingRangeSelectorView.handlePanGesture(_:)))
             selectionView.alignMaskedView(to: stackView)
         }
     }
@@ -134,7 +134,7 @@ final class SliderView: UIView {
 
             itemsViews = items.map { text in
                 let itemView = ItemView()
-                itemView.tapGesture.addTarget(self, action: #selector(SliderView.handleTapGesture(_:)))
+                itemView.tapGesture.addTarget(self, action: #selector(SlidingRangeSelectorView.handleTapGesture(_:)))
                 stackView.addArrangedSubview(itemView)
                 itemView.text = text
                 return itemView
@@ -149,7 +149,7 @@ final class SliderView: UIView {
     private func selectItem(index: Int, isMinimum: Bool, animated: Bool = true) {
         let selectionView = isMinimum ? minSelectionView : maxSelectionView
         let frameForItem = convertedItemsFrames[index]
-        let newSelectionViewWidth = SliderView.selectionViewWidth(for: itemsViews[index].text)
+        let newSelectionViewWidth = SlidingRangeSelectorView.selectionViewWidth(for: itemsViews[index].text)
 
         let changeSelectionViewFrame: () -> Void = { [weak self] in
             selectionView.frame.size.width = newSelectionViewWidth
@@ -182,7 +182,7 @@ final class SliderView: UIView {
 }
 
 // MARK: - Gestures
-extension SliderView {
+extension SlidingRangeSelectorView {
     @objc private func handleTapGesture(_ tap: UITapGestureRecognizer) {
         guard let view = tap.view,
             let props = currentProps,
@@ -266,8 +266,8 @@ extension SliderView {
             if nearestFramesIndices.count == 2 {
                 let leftNearestItemIndex = nearestFramesIndices[0]
                 let rightNearestItemIndex = nearestFramesIndices[1]
-                let leftNearestItemWidth = SliderView.selectionViewWidth(for: itemsViews[leftNearestItemIndex].text)
-                let rightNearestItemWidth = SliderView.selectionViewWidth(for: itemsViews[rightNearestItemIndex].text)
+                let leftNearestItemWidth = SlidingRangeSelectorView.selectionViewWidth(for: itemsViews[leftNearestItemIndex].text)
+                let rightNearestItemWidth = SlidingRangeSelectorView.selectionViewWidth(for: itemsViews[rightNearestItemIndex].text)
                 if leftNearestItemWidth == rightNearestItemWidth {
                     view.frame.size.width = leftNearestItemWidth
                 } else {
@@ -308,7 +308,7 @@ extension SliderView {
     }
 }
 
-extension SliderView {
+extension SlidingRangeSelectorView {
     fileprivate enum Constants {
         static let selectionViewColor = UIColor(red: 0/255, green: 158/255, blue: 152/255, alpha: 1.0)
         static let rangeViewColor = UIColor(white: 0.9, alpha: 1.0)
@@ -353,8 +353,8 @@ private class SelectionView: UIView {
         super.init(
             frame: CGRect(
                 origin: .zero,
-                size: .init(width: SliderView.Constants.selectionViewMinWidth,
-                            height: SliderView.Constants.selectionViewHeight)
+                size: .init(width: SlidingRangeSelectorView.Constants.selectionViewMinWidth,
+                            height: SlidingRangeSelectorView.Constants.selectionViewHeight)
             )
         )
         setup()
@@ -371,7 +371,7 @@ private class SelectionView: UIView {
     }
 
     private func setup() {
-        backgroundColor = SliderView.Constants.selectionViewColor
+        backgroundColor = SlidingRangeSelectorView.Constants.selectionViewColor
         isUserInteractionEnabled = true
         layer.cornerRadius = 5
         layer.masksToBounds = true

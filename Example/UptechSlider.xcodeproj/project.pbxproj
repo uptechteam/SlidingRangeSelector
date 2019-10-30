@@ -12,7 +12,7 @@
 		AC4851E4230AA7740053FA77 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC4851E2230AA7740053FA77 /* Main.storyboard */; };
 		AC4851E6230AA7760053FA77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AC4851E5230AA7760053FA77 /* Assets.xcassets */; };
 		AC4851E9230AA7760053FA77 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC4851E7230AA7760053FA77 /* LaunchScreen.storyboard */; };
-		AC66169F2355C7D90072B735 /* SliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC66169E2355C7D90072B735 /* SliderView.swift */; };
+		AC66169F2355C7D90072B735 /* SlidingRangeSelectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC66169E2355C7D90072B735 /* SlidingRangeSelectorView.swift */; };
 		AC90E4D723541291008A24CA /* TablewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC90E4D623541291008A24CA /* TablewViewController.swift */; };
 		AC90E4D923541364008A24CA /* SliderTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC90E4D823541364008A24CA /* SliderTableViewCell.swift */; };
 		AC90E4DB23541507008A24CA /* SliderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AC90E4DA23541507008A24CA /* SliderModel.swift */; };
@@ -26,7 +26,7 @@
 		AC4851E5230AA7760053FA77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AC4851E8230AA7760053FA77 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AC4851EA230AA7760053FA77 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AC66169E2355C7D90072B735 /* SliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SliderView.swift; path = ../../Sources/SliderView.swift; sourceTree = "<group>"; };
+		AC66169E2355C7D90072B735 /* SlidingRangeSelectorView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SlidingRangeSelectorView.swift; path = ../../Sources/SlidingRangeSelectorView.swift; sourceTree = "<group>"; };
 		AC90E4D623541291008A24CA /* TablewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TablewViewController.swift; sourceTree = "<group>"; };
 		AC90E4D823541364008A24CA /* SliderTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderTableViewCell.swift; sourceTree = "<group>"; };
 		AC90E4DA23541507008A24CA /* SliderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SliderModel.swift; sourceTree = "<group>"; };
@@ -62,7 +62,7 @@
 		AC4851DD230AA7740053FA77 /* UptechSlider */ = {
 			isa = PBXGroup;
 			children = (
-				AC66169E2355C7D90072B735 /* SliderView.swift */,
+				AC66169E2355C7D90072B735 /* SlidingRangeSelectorView.swift */,
 				AC90E4DA23541507008A24CA /* SliderModel.swift */,
 				AC90E4DD23541BF6008A24CA /* DemoPlainView */,
 				AC90E4DC23541BDD008A24CA /* DemoTableView */,
@@ -166,7 +166,7 @@
 				AC90E4DB23541507008A24CA /* SliderModel.swift in Sources */,
 				AC90E4D723541291008A24CA /* TablewViewController.swift in Sources */,
 				AC4851E1230AA7740053FA77 /* PlainViewController.swift in Sources */,
-				AC66169F2355C7D90072B735 /* SliderView.swift in Sources */,
+				AC66169F2355C7D90072B735 /* SlidingRangeSelectorView.swift in Sources */,
 				AC4851DF230AA7740053FA77 /* AppDelegate.swift in Sources */,
 				AC90E4D923541364008A24CA /* SliderTableViewCell.swift in Sources */,
 			);
