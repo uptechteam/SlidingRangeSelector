@@ -5,8 +5,8 @@
 Simple, nice floating range selector with the behaviour of slider, that allows to select a range of values
 
 ## Main Features
-* 2 sliding thumbs that can change their width interactively
-* select range by taping on values
+* select range by taping on values or by sliding thumbs
+* thumbs that can change their width interactively while sliding
 * masked labels, that gives nice effect while sliding a thumb
 ![](mask-feature.png)
 
