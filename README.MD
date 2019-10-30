@@ -12,7 +12,7 @@ Simple, nice range selector with the behaviour of a slider, that allows to selec
 
 ## Installation
 
-Just add ```SliderView.swift``` file to your Xcode project
+Just add ```SlidingRangeSelector.swift``` file to your Xcode project
 
 ## Usage
 
