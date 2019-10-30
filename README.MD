@@ -1,8 +1,8 @@
-# FloatingRangeSelector
+# SlidingRangeSelector
 ![](slider-main.png)
 ![Platform](https://img.shields.io/badge/platform-iOS-009E98)
 
-Simple, nice floating range selector with the behaviour of slider, that allows to select a range of values
+Simple, nice range selector with the behaviour of a slider, that allows to select a range of values
 
 ## Main Features
 * select range by taping on values or by sliding thumbs
