@@ -1,8 +1,14 @@
-# UptechSlider
+# FloatingRangeSelector
 ![](slider-main.png)
 ![Platform](https://img.shields.io/badge/platform-iOS-009E98)
 
-Simple, nice UI slider with ability to select range from array of your values
+Simple, nice floating range selector with the behaviour of slider, that allows to select a range of values
+
+## Main Features
+* 2 sliding thumbs that can change their width interactively
+* select range by taping on values
+* masked labels, that gives nice effect while sliding a thumb
+![](mask-feature.png)
 
 ## Installation
 
