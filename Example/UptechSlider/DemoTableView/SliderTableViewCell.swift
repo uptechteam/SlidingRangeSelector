@@ -16,7 +16,7 @@ class SliderTableViewCell: UITableViewCell {
 
     weak var delegate: SliderTableViewCellDelegate?
 
-    @IBOutlet private var sliderView: SliderView!
+    @IBOutlet private var sliderView: SlidingRangeSelectorView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -40,8 +40,8 @@ class SliderTableViewCell: UITableViewCell {
 
 }
 
-extension SliderTableViewCell: SliderViewDelegate {
-    func sliderViewDidSelectRange(_ sliderView: SliderView, minIndex: Int, maxIndex: Int) {
+extension SliderTableViewCell: SlidingRangeSelectorViewDelegate {
+    func sliderViewDidSelectRange(_ sliderView: SlidingRangeSelectorView, minIndex: Int, maxIndex: Int) {
         delegate?.sliderTableViewCellDidSelectRange(self, minIndex: minIndex, maxIndex: maxIndex)
     }
 }

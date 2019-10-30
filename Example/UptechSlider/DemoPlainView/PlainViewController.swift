@@ -10,7 +10,7 @@ import UIKit
 
 class PlainViewController: UIViewController {
 
-    @IBOutlet private weak var sliderView: SliderView!
+    @IBOutlet private weak var sliderView: SlidingRangeSelectorView!
     
     var sliderModel = SliderModel(
         values: ["uptech", "1", "2", "3", "4", "5"],
@@ -32,8 +32,8 @@ class PlainViewController: UIViewController {
 
 }
 
-extension PlainViewController: SliderViewDelegate {
-    func sliderViewDidSelectRange(_ sliderView: SliderView, minIndex: Int, maxIndex: Int) {
+extension PlainViewController: SlidingRangeSelectorViewDelegate {
+    func sliderViewDidSelectRange(_ sliderView: SlidingRangeSelectorView, minIndex: Int, maxIndex: Int) {
         sliderModel.minSelectedValueIndex = minIndex
         sliderModel.maxSelectedValueIndex = maxIndex
     }
